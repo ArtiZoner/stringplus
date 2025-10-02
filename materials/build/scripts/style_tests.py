@@ -54,7 +54,6 @@ def style_test_result(arr_of_files):
 
 def run():
     arr_of_files = get_source_filenames()
-
     if style_test_result(arr_of_files):
         print('Style test: OK\n1')
     else:

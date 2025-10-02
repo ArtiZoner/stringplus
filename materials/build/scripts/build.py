@@ -6,35 +6,23 @@ PATH_TO_PROJECT = '/'.join(os.path.abspath(os.path.dirname(sys.argv[0])).split('
 build_stderr = sys.stdout
 build_stdout = sys.stdout
 
-test_name = sys.argv[1]
+part = sys.argv[1]
 
 
-def get_all_about_make():
-    file = open(PATH_TO_PROJECT + '/tests/' + test_name + '/compile_file')
-    all_about_make = file.read().split()
-    file.close()
-    return all_about_make
-
-
-def build(makefile_dir, makefile_name, makefile_stage):
+def build_static_library(library_dir='src', stage='s21_string.a'):
     try:
-        build_result = subprocess.run(['make', makefile_stage],
+        build_result = subprocess.run(['make', stage],
                                       stderr=build_stderr, stdout=build_stdout, text=True,
-                                      cwd=PATH_TO_PROJECT + '/' + makefile_dir)
+                                      cwd=PATH_TO_PROJECT + '/' + library_dir)
     except Exception as e:
         return -1
 
     return build_result.returncode
 
 
-def run():
-    makefile_dir, makefile_name, makefile_stage = get_all_about_make()
-    result_build_code = build(makefile_dir, makefile_name, makefile_stage)
+static_library_build_result = build_static_library()
+if static_library_build_result == 0:
+    print('\n\nProject build: OK\n1')
+else:
+    print('\n\nProject build: FAIL\n0')
 
-    if result_build_code != 0:
-        print('\nProject build: FAIL\n 0')
-    else:
-        print('\nProject build: OK\n 1')
-
-
-run()
